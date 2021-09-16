@@ -11,6 +11,6 @@ export default {
   components: {
     ImageUpload
   },
- 
+  middleware: "isAuthenticated"
 }
 </script>

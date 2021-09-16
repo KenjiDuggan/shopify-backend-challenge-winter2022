@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
+const MONGO_PORT = "mongodb://localhost:27017/shopifyapp"
 
 mongoose
-  .connect(process.env.MONGODB_PORT)
+  .connect(MONGO_PORT)
   .then(() => {
     console.log('Database is connected')
   })

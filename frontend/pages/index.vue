@@ -10,18 +10,12 @@
         </ul>
       </div>
     </v-container>
-    <v-btn @click="getLoginPage">Login Here</v-btn>
     <br />
   </v-row>
 </template>
 
 <script>
 export default {
-  // async asyncData({ $axios }) {
-  //   const images = await $axios.$get('/api/public')
-  //   console.log(images)
-  //   return { images }
-  // },
   data() {
     return {
       services: [
@@ -61,12 +55,6 @@ export default {
       ]
     }
   },
-  methods: {
-    getLoginPage() {
-      console.log("Clicking Button It seems")
-      this.$axios.$get('/api/login')
-    }
-  }
 }
 </script>
 
