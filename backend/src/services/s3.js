@@ -1,63 +1,60 @@
-require('dotenv').config()
+require('dotenv').config({ path: 'src/.env' }) 
 const fs = require('fs')
-
-const { S3 } = require('@aws-sdk/client-s3')
-
 const bucketName = process.env.AWS_BUCKET_NAME
-const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
- 
-// AWS S3 Bucket Access
-const s3 = new S3({
-    region,
-    accessKeyId,
-    secretAccessKey
-})
 
-// Uploads File to S3 Bucket
-const uploadFile = (file, extension) => {
+const { PutObjectCommand, GetObjectCommand, ListObjectsCommand } = require("@aws-sdk/client-s3");
+const { s3Client } = require('./s3Client')
+
+// Uploads an image to S3 bucket
+const putImage = async(file, folder, extension) => {
     const fileStream = fs.createReadStream(file.path)
- 
-    const uploadParams = {
+    
+    const params = {
         Bucket: bucketName,
         Body: fileStream,
-        Key: file.filename + extension
+        Key: folder + file.filename + '.' + extension, // folder as prefix to determine if Public or Username directory
     }
-
-    return s3.upload(uploadParams)
+ 
+    try {
+        const results = await s3Client.send(new PutObjectCommand(params))
+        return results
+    } catch (err) {
+        console.log("Error", err)
+    }
 }
 
-// Downloads File From S3 Bucket
-const getFileStream = (fileKey) => {
-    const downloadParams = {
+// Get Image Object By Key
+const getImageByKey = async(fileKey) => {
+    const params = {
         Key: fileKey,
         Bucket: bucketName,
     }
 
-    return s3.getObject(downloadParams).createReadStream()
+    try {
+        const results = await s3Client.send(new GetObjectCommand(params))
+        return results
+    } catch (err) {
+        console.log("Error", err)
+    }
 }
 
 // Gets a list of Objects so I can display the URL's on client-side
-const getPublicList = (max) => {
-    const params = {     
+const getImagesByPrefix = async(prefix) => {
+    const params = {
         Bucket: bucketName,
-        MaxKeys: max,
+        Prefix: prefix // which determines the 'folder'
     }
-
-    s3.listObjectsV2(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack)
-            return err // an error occurred
-        } else {
-            console.log(data)
-            return data // successful response
-        }
-    })
-}
  
+    try {
+        const results = await s3Client.send(new ListObjectsCommand(params))
+        return results
+    } catch (err) {
+        console.log("Error", err)
+    }
+}
+
 module.exports = {
-    uploadFile,
-    getFileStream,
-    getPublicList
+    putImage,
+    getImageByKey,
+    getImagesByPrefix
 }
