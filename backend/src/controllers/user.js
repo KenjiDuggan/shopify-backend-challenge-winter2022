@@ -1,4 +1,5 @@
 const User = require('../models/User')
+// const { createRole } = require('../services/iam')
 
 exports.registerNewUser = async (req, res) => {
     try {
@@ -15,9 +16,11 @@ exports.registerNewUser = async (req, res) => {
         })
         const data = await user.save()
         const token = await user.generateAuthToken() // here it is calling the method that we created in the model
+         
+        // const response = await createRole(req.body.name.toLowerCase().trim())
+      
         res.status(201).json({ data, token })
     } catch (err) {
-        console.log("There is error: " + JSON.stringify(req.body))
         res.status(400).json({ err: err })
     }
 }
@@ -38,5 +41,9 @@ exports.loginUser = async (req, res) => {
   }
 
 exports.getUserDetails = async (req, res) => {
+  console.log(req.userData)
+  console.log(req.body)
+  // await createRole(req.userData.name.toLowerCase().trim())
+
   await res.json(req.userData)
 }

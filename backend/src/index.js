@@ -12,6 +12,7 @@ const port = process.env.PORT || 3001
 const userRoutes = require('./routers/user')  
 const imagesRoutes = require('./routers/image')
 
+
 /**
  * Application Configuration
  */
@@ -26,5 +27,9 @@ app.use(morgan('dev')) // Morgan on Dev
 app.use('/user', userRoutes)
 app.use('/images', imagesRoutes)
 
+
 // Listen on port defined above
-app.listen(port, () => console.log('Listening on port: ' + port))
+module.exports = app.listen(port, () => {
+    console.log('Listening on port: ' + port)
+})
+ 

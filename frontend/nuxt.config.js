@@ -61,24 +61,24 @@ export default {
           required: true,
           type: "Bearer"
         },
-        // user: {
-        //   property: "user",
-        //   autoFetch: true
-        // },
+        user: {
+          property: false,
+          autoFetch: true
+        },
 //      refreshToken: {  // it sends request automatically when the access token expires, and its expire time has set on the Back-end and does not need to we set it here, because is useless
 //        property: "refresh_token", // property name that the Back-end sends for you as a refresh token for saving on localStorage and cookie of user browser
 //        data: "refresh_token", // data can be used to set the name of the property you want to send in the request.
 //      },
         endpoints: {
-          login: { url: "/api/user/login", method: "post", propertyName: 'access_token' },
+          login: { url: "/api/user/login", method: "post" },
 //        refresh: { url: "/api/auth/refresh-token", method: "post" },
           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
-          user: { url: "/api/user/me", method: "get", propertyName: false }
+          user: { url: "/api/user/me", method: "get" }
         }
       }
     }
   },
-
+ 
   // Set up Auth module to work globally
   // router: {
   //   middleware: 'auth'
