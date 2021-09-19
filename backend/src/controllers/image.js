@@ -2,7 +2,7 @@ const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
 
-const { putImage, getImageByKey, getImagesByPrefix } = require('../services/s3')
+const { putImage, getImageByKey, deleteImageByKey, getImagesByPrefix } = require('../services/s3')
 
 exports.putImage = async(req, res) => {
     try {
@@ -37,14 +37,34 @@ exports.getPublicImages = async(req, res) => {
     }
 }
 
-exports.getSingleImage = async(req, res) => {
+exports.getPublicImages = async(req, res) => {
+    try {
+        const prefix = req.query.name + '/'
+        const result = await getImagesByPrefix(prefix)
+
+        res.status(201).json({ result })
+    } catch (err) {
+        res.status(400).json({ err: err })
+    }
+}
+
+exports.getImageByKey = async(req, res) => {
     try {
         const key = req.params.key
-        const readStream = getFileStream(key)
-        
-        readStream.pipe(res)
-        
+        const result = getImageByKey(key)
 
+        res.status(201).json({ result })
+    } catch (err) {
+        res.status(400).json({ err: err })
+    }
+}
+
+exports.deleteImageByKey = async(req, res) => {
+    try {
+        const key = req.params.key
+        const result = deleteImageByKey(key)
+
+        res.status(201).json({ result })
     } catch (err) {
         res.status(400).json({ err: err })
     }

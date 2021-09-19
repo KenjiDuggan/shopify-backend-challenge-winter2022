@@ -2,7 +2,7 @@ require('dotenv').config({ path: 'src/.env' })
 const fs = require('fs')
 const bucketName = process.env.AWS_BUCKET_NAME
 
-const { PutObjectCommand, GetObjectCommand, ListObjectsCommand } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, GetObjectCommand, ListObjectsCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { s3Client } = require('./s3Client')
 
 // Uploads an image to S3 bucket
@@ -32,6 +32,21 @@ const getImageByKey = async(fileKey) => {
 
     try {
         const results = await s3Client.send(new GetObjectCommand(params))
+        return results
+    } catch (err) {
+        console.log("Error", err)
+    }
+}
+
+// Delete Image Object By Key
+const deleteImageByKey = async(fileKey) => {
+    const params = {
+        Key: fileKey,
+        Bucket: bucketName,
+    }
+
+    try {
+        const results = await s3Client.send(new DeleteObjectCommand(params))
         return results
     } catch (err) {
         console.log("Error", err)

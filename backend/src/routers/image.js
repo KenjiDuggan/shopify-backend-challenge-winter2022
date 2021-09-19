@@ -7,9 +7,10 @@ const upload = multer({ dest: 'src/uploads/'})
 const auth = require('../middleware/auth')
 const imagesController = require('../controllers/image')
 
-router.get('/get', imagesController.getPublicImages)
-router.get('/get/private/:key', auth, imagesController.getSingleImage)
-router.post('/post/single/public', upload.single('file'), imagesController.putImage)
-// router.post('/post/batch/public', imagesController.uploadImagesPublic)
+router.get('/get/public', imagesController.getPublicImages)
+router.get('/get/private', auth, imagesController.getPrivateImages)
+router.get('/get/:key', auth, imagesController.getImageByKey)
+router.post('/post', upload.single('file'), imagesController.putImage)
+router.post('/delete/:key', auth, imagesController.deleteImageByKey)
 
 module.exports = router
