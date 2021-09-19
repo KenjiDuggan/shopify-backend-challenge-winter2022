@@ -3,29 +3,47 @@
     grid-list-md
     text-xs-center
     fill-height>
-    <v-file-input v-model="currFiles" 
-        small-chips 
-        show-size 
-        multiple 
-        clearable 
-        label="Add files"
-        @input="inputChanged">
-      <template #selection="{ text, index }">
-        <v-chip small text-color="white" color="#295671" close @click:close="remove(index)">
-            {{ text }}
-        </v-chip>
-      </template>
-    </v-file-input>
-    <!-- <v-img :src="url"></v-img> -->
-    <div v-if="files.length" :key="files">
-        <h5>All files</h5>
-        <v-chip v-for="f in files" :key="f" class="mr-1">
-            {{ f.name }}
-        </v-chip>
-        <div class="py-3">
-            <v-btn>Upload all</v-btn>
+    <h1>
+      Add Images
+    </h1>
+    <v-row>
+      <v-col cols="12">
+        <v-switch
+          v-model="pub"
+          :label="pub ? 'Public Upload' : 'Private Upload'"
+        ></v-switch>
+      </v-col>
+      <v-col cols="12">
+        <v-file-input 
+            id="file"
+            ref="file"
+            v-model="currFiles" 
+            small-chips 
+            show-size 
+            multiple 
+            clearable 
+            label="Add files"
+            @change="loadingImages">
+          <template #selection="{ text, index }">
+            <v-chip small text-color="white" color="#295671" close @click:close="remove(index)">
+                {{ text }}
+            </v-chip>
+          </template>
+        </v-file-input>
+      </v-col>
+      <v-col cols="12">
+        <div v-if="files.length" >
+            <h5>All files</h5>
+            <v-chip v-for="f in files" :key="f" class="mr-1">
+                {{ f.name }}
+            </v-chip>
+            <div class="py-3">
+                <v-btn @click="uploadImage">Upload</v-btn>
+            </div>
         </div>
-    </div>
+      </v-col>
+    </v-row>
+ 
   </v-container>
 </template>
 
@@ -36,33 +54,15 @@ export default {
       image: '',
       currFiles: [],
       files: [],
-      urls: []
+      urls: [],
+      pub: true
     }
   },
   methods: {
-    async uploadImage() {
-          const data = new FormData();
-          console.log("This is the complete image Object: " + this.image)
-          data.append("image", this.image.files[0], this.image + ".jpg");
-          data.append("extension", ".jpg"); // Make this dynamic later
-
-          const config = {
-              headers: {
-                  'content-type': 'multipart/form-data'
-              }
-          }
-
-          await this.$axios.$post('/api/images', data, config).then(response => {
-              console.log({ response });
-          }).catch(error => {
-              console.log({ error });
-          });
-      },
-    },
     remove(index) {
       this.files.splice(index, 1)
     },
-    inputChanged() {
+    loadingImages() {
       console.log("Input has changed " + this.files)
 
       this.files = [
@@ -74,6 +74,55 @@ export default {
         urls[i] = URL.createObjectURL(e)
       })
       this.urls = urls
+    },
+    async uploadImage() {
+      if(this.currFiles.length > 1) {
+        const formData = new FormData();
+
+        // files
+        for (const file of this.currFiles) {
+            formData.append("files", file, file.name);
+        }
+        formData.append("extension", ".jpg"); // Make this dynamic later
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+ 
+        await this.$axios.$post('/api/images/post/multi/public', formData, config).then(response => {
+            console.log({ response });
+        }).catch(error => {
+            console.log({ error });
+        });
+
+      } else if(this.currFiles.length === 1) {
+          const formData = new FormData();
+          const file = this.currFiles[0]
+          const extension = file.name.split('.')[1]
+          const pub = this.pub
+
+          formData.append('file', file)
+          formData.append('extension', extension)
+          formData.append('public', pub)
+          
+          const config = {
+              headers: {
+                  'content-type': 'multipart/form-data'
+              }
+          }
+
+          await this.$axios.$post('/api/images/post/single/public', formData, config).then(response => {
+              console.log({ response });
+          }).catch(error => {
+              console.log({ error });
+          });
+
+        } else {
+          console.log('There are no images to upload.')
+        }
+      },
     }
 }
 </script> 
