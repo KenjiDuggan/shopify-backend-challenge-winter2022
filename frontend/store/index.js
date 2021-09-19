@@ -1,9 +1,8 @@
 // Default State
 export const state = () => ({
     auth: {
-        loggedIn: false
+        loggedIn: false 
     },
-    user: {},
 })
 
 // Getters

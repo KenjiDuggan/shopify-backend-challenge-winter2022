@@ -87,60 +87,53 @@
 <script>
 import loginIcon from '../static/images/login_black_24dp.svg'
 import registerIcon from '../static/images/fact_check_black_24dp.svg'
-import profileIcon from '../static/images/account_circle_black_24dp.svg'
 import homeIcon from '../static/images/photo_library_black_24dp.svg'
 import uploadIcon from '../static/images/add_to_photos_black_24dp.svg'
-import searchIcon from '../static/images/image_search_black_24dp.svg'
 import deleteIcon from '../static/images/healing_black_24dp.svg'
-import shopIcon from '../static/images/receipt_long_black_24dp.svg'
 import logoutIcon from '../static/images/logout_black_24dp.svg'
+import publicIcon from '../static/images/public_black_24dp.svg'
+import privateIcon from '../static/images/vpn_lock_black_24dp.svg'
 
 export default {
   data () {
     return {
       loginIcon,
       registerIcon,
-      profileIcon,
       homeIcon,
       uploadIcon,
-      searchIcon,
       deleteIcon,
-      shopIcon,
       logoutIcon,
+      publicIcon,
+      privateIcon,
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
-        {
-          icon: profileIcon,
-          title: 'Profile',
-          to: '/profile'
-        },
         {
           icon: homeIcon,
           title: 'Home/Instructions',
           to: '/'
         },
         {
+          icon: publicIcon,
+          title: 'Public Gallery',
+          to: '/public'
+        },
+        {
+          icon: privateIcon,
+          title: 'Private Gallery',
+          to: '/private'
+        },
+        {
           icon: uploadIcon,
           title: 'Upload',
           to: '/upload'
-        },
-        {
-          icon: searchIcon,
-          title: 'Search',
-          to: '/search'
-        },  
+        }, 
         {
           icon: deleteIcon,
           title: 'Delete',
           to: '/delete'
         },
-        {
-          icon: shopIcon,
-          title: 'Shop',
-          to: '/shop'
-        }
       ],
       miniVariant: false,
       right: true,

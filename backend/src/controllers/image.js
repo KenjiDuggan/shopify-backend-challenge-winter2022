@@ -41,8 +41,10 @@ exports.getSingleImage = async(req, res) => {
     try {
         const key = req.params.key
         const readStream = getFileStream(key)
-    
+        
         readStream.pipe(res)
+        
+
     } catch (err) {
         res.status(400).json({ err: err })
     }
