@@ -52,6 +52,13 @@ export default {
                     email: this.registerData.email,
                     password: this.registerData.password
                 })
+                await this.$auth.loginWith('local', {
+                    data: {
+                        email: this.registerData.email,
+                        password: this.registerData.password
+                    }
+                })
+                this.$router.push('/')
                 console.log(user)
             } catch (err) {
                 console.log(err)

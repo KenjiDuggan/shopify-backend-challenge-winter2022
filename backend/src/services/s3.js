@@ -71,5 +71,6 @@ const getImagesByPrefix = async(prefix) => {
 module.exports = {
     putImage,
     getImageByKey,
-    getImagesByPrefix
+    getImagesByPrefix,
+    deleteImageByKey
 }

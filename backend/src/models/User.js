@@ -15,6 +15,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please include your password.']
   },
+  iam_access_key: {
+    type: String,
+    required: [true, 'Something went wrong with IAM user creds.']
+  },
+  iam_secret_key: {
+    type: String,
+    required: [true, 'Something went wrong with IAM user creds.']
+  },
   tokens: [
     {
       token: {
@@ -37,7 +45,7 @@ userSchema.pre('save', async function(next) {
 // Generates auth token for User
 userSchema.methods.generateAuthToken = async function() {
   const user = this
-  const token = jwt.sign({ _id: user._id, name: user.name, email: user.email },
+  const token = jwt.sign({ _id: user._id, name: user.name, email: user.email, iam_access_key: user.iam_access_key, iam_secret_key: user.iam_secret_key },
   'secret'  )
   user.tokens = user.tokens.concat({ token })
   await user.save()
