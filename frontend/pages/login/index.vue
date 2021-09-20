@@ -40,14 +40,11 @@ export default {
   },
   methods: {
     async login() {
-        try {
-            const response = await this.$auth.loginWith('local', {
+        try { 
+            await this.$auth.loginWith('local', {
                 data: this.loginData
             })
             this.$router.push('/')
-            if(response.status === 200 || response.status === 201) {
-                this.$store.commit("SET_AUTH_STATE", true);
-            } 
         } catch (err) {
             console.log(err)
         }

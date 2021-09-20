@@ -69,6 +69,7 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <span v-if='isAuthenticated'>{{ loggedInUser.name }}</span>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -85,6 +86,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import loginIcon from '../static/images/login_black_24dp.svg'
 import registerIcon from '../static/images/fact_check_black_24dp.svg'
 import homeIcon from '../static/images/photo_library_black_24dp.svg'
@@ -141,9 +144,7 @@ export default {
     }
   },
   computed: {
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;  // it check if user isAuthenticated 
-    }
+    ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
   methods: {
     async logout() {

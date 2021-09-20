@@ -37,7 +37,7 @@ exports.getPublicImages = async(req, res) => {
     }
 }
 
-exports.getPublicImages = async(req, res) => {
+exports.getPrivateImages = async(req, res) => {
     try {
         const prefix = req.query.name + '/'
         const result = await getImagesByPrefix(prefix)
