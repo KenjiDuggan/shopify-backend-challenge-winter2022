@@ -47,19 +47,19 @@ export default {
     methods: {
         async register() {
             try {
-                const user = await this.$axios.$post('/api/auth/register', {
+                await this.$axios.$post('/api/user/register', {
                     name: this.registerData.fullname,
                     email: this.registerData.email,
                     password: this.registerData.password
                 })
+
                 await this.$auth.loginWith('local', {
                     data: {
                         email: this.registerData.email,
                         password: this.registerData.password
                     }
                 })
-                this.$router.push('/')
-                console.log(user)
+                this.$router.push('/profile')
             } catch (err) {
                 console.log(err)
             }   

@@ -1,4 +1,5 @@
 /src/.env
 /src/uploads/
+/src/test/.env
 
 node_modules

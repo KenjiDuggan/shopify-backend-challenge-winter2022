@@ -35,23 +35,6 @@ export default {
             "secure deletion of images"
           ]
         },
-        {
-          subtitle: "SEARCH function",
-          items: [
-            "from characteristics of the images",
-            "from text",
-            "from an image (search for similar images)"
-          ]
-        },
-        {
-          subtitle: "SELL/BUY images",
-          items: [
-            "ability to manage inventory",
-            "set price",
-            "discounts",
-            "handle money"
-          ]
-        }
       ]
     }
   },

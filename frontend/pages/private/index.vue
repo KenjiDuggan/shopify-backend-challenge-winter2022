@@ -24,13 +24,12 @@ export default {
     components: {
         Card
     },
+    middleware: 'isAuthenticated',
     async asyncData({ $axios }) { // we do our first 100 images from this fetch
-        let images = await $axios.$get('/api/images/get')
+        let images = await $axios.$get('/api/images/private')
         images = images.result.Contents
         return { images }
     },
 }
 </script>
-<style>
-
-</style>
+<style></style>

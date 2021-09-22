@@ -44,12 +44,12 @@ export default {
             await this.$auth.loginWith('local', {
                 data: this.loginData
             })
-            this.$router.push('/')
+            this.$router.push('/profile')
         } catch (err) {
             console.log(err)
         }
     }
-  }
+  },
 };
 </script>
 <style>

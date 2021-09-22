@@ -20,7 +20,7 @@ exports.registerNewUser = async (req, res) => {
         access_key = process.env.USER_AWS_ACCESS_KEY,
         secret_key = process.env.USER_AWS_SECRET_KEY
       }
-
+ 
       const user = new User({
           name: req.body.name,
           email: req.body.email,
@@ -31,7 +31,7 @@ exports.registerNewUser = async (req, res) => {
 
       const data = await user.save()
       const token = await user.generateAuthToken() // here it is calling the method that we created in the model
-        
+      
       // const response = await createRole(req.body.name.toLowerCase().trim())
     
       res.status(201).json({ data, token })
@@ -48,7 +48,7 @@ exports.loginUser = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: 'Login failed! Check authentication credentials' })
     }
-    console.log('this is the user: ' + user)
+ 
     const token = await user.generateAuthToken()
     res.status(200).json({ user, token })
   } catch (err) {
@@ -57,9 +57,10 @@ exports.loginUser = async (req, res) => {
 }
 
 exports.getUserDetails = async (req, res) => {
-  console.log(req.userData)
-  console.log(req.body)
   // await createRole(req.userData.name.toLowerCase().trim())
+  const userObj = {
+    user: req.userData
+  }
 
-  await res.json(req.userData)
+  await res.json(userObj)
 }

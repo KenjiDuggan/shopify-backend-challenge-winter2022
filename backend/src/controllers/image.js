@@ -2,7 +2,7 @@ const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
 
-const { putImage, getImageByKey, deleteImageByKey, getImagesByPrefix } = require('../services/s3')
+const { putImage, getImageByKey, deleteImageByKey, getImagesByPrefix, checkIfPrefixExists } = require('../services/s3')
 
 exports.putImage = async(req, res) => {
     try {
@@ -28,9 +28,10 @@ exports.putImage = async(req, res) => {
  
 exports.getPublicImages = async(req, res) => {
     try {
+        console.log('get public images')
         const prefix = 'Public/' // the folder we want images from
         const result = await getImagesByPrefix(prefix)
-
+        console.log(result)
         res.status(201).json({ result })
     } catch (err) {
         res.status(400).json({ err: err })
@@ -39,49 +40,39 @@ exports.getPublicImages = async(req, res) => {
 
 exports.getPrivateImages = async(req, res) => {
     try {
-        const prefix = req.query.name + '/'
+        const prefix = req.userData.name.toLowerCase().replace(/\s/g, "") + '/'
+        console.log('this is prefix: ' + prefix)
+        await checkIfPrefixExists(prefix)
         const result = await getImagesByPrefix(prefix)
-
         res.status(201).json({ result })
     } catch (err) {
         res.status(400).json({ err: err })
     }
 }
 
-exports.getImageByKey = async(req, res) => {
+exports.getImagesByKeys = async(req, res) => {
     try {
-        const key = req.params.key
-        const result = getImageByKey(key)
-
-        res.status(201).json({ result })
+        const keys = req.body.keys
+        let results = []
+        keys.forEach((e) => {
+            result.push(getImageByKey(e))
+        })
+        res.status(201).json({ results })
     } catch (err) {
         res.status(400).json({ err: err })
     }
 }
 
-exports.deleteImageByKey = async(req, res) => {
+exports.deleteImagesByKeys = async(req, res) => {
     try {
-        const key = req.params.key
-        const result = deleteImageByKey(key)
-
-        res.status(201).json({ result })
+        const keys = req.body.keysd
+        let results = []
+        keys.forEach((e) => {
+            result.push(deleteImageByKey(e))
+        })
+        res.status(201).json({ results })
     } catch (err) {
         res.status(400).json({ err: err })
     }
 }
-
-// exports.uploadImagesPublic  = async (req, res) => {
-//     try {
-//         await multer().array("images")
-//         console.log('this is after upload')
-//         const extension = req.params.extension
-//         const file = req.file
-//         const result = await uploadFile(file)
-//         await unlinkFile(file.path)
-//         // const description = req.body.description
-//         res.send({ imagePath: `/images/${result.key}` })
-//     } catch (err) {
-//       res.status(400).json({ err: err })
-//     }
-// }
  

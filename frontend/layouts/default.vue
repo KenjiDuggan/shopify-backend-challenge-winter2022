@@ -69,7 +69,7 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <span v-if='isAuthenticated'>{{ loggedInUser.name }}</span>
+      <span v-if='isAuthenticated'></span>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -88,6 +88,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import profileIcon from '../static/images/account_circle_black_24dp.svg'
 import loginIcon from '../static/images/login_black_24dp.svg'
 import registerIcon from '../static/images/fact_check_black_24dp.svg'
 import homeIcon from '../static/images/photo_library_black_24dp.svg'
@@ -100,6 +101,7 @@ import privateIcon from '../static/images/vpn_lock_black_24dp.svg'
 export default {
   data () {
     return {
+      profileIcon,
       loginIcon,
       registerIcon,
       homeIcon,
@@ -112,6 +114,11 @@ export default {
       drawer: false,
       fixed: false,
       items: [
+        {
+          icon: profileIcon, 
+          title: 'Profile',
+          to: '/profile'
+        },
         {
           icon: homeIcon,
           title: 'Home/Instructions',

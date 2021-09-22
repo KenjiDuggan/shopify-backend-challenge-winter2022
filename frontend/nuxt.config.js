@@ -47,7 +47,9 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://auth.nuxtjs.org/guide/setup/
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    // https://www.npmjs.com/package/@nuxtjs/dotenv
+    '@nuxtjs/dotenv'
   ],
 
   // Must change once I understand it better
@@ -75,7 +77,7 @@ export default {
 
   // Proxy for api requests 
   proxy: {
-    '/api/': { target: 'http://localhost:3001/', pathRewrite: {'^/api/': ''}, changeOrigin: true },
+    '/api/': { target: 'http://localhost:8080/', pathRewrite: {'^/api/': ''}, changeOrigin: true },
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

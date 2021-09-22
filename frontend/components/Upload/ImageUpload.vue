@@ -63,8 +63,6 @@ export default {
       this.files.splice(index, 1)
     },
     loadingImages() {
-      console.log("Input has changed " + this.files)
-
       this.files = [
           ...this.currFiles,
           ...this.files
